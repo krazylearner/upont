@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new KI\PonthubBundle\KIPonthubBundle(),
             new KI\PublicationBundle\KIPublicationBundle(),
             new KI\UserBundle\KIUserBundle(),
+            new KI\PontheBundle\KIPontheBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -1,3 +1,9 @@
+ki_ponthe:
+    resource: "@KIPontheBundle/Controller/"
+    type:     annotation
+    defaults: { _format: 'json' }
+    prefix:   /
+
 ki_clubinfo:
     type:     annotation
     resource: '@KIClubinfoBundle/Controller'

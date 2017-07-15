@@ -1,0 +1,4 @@
+services:
+#    ki_ponthe.example:
+#        class: KI\PontheBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
