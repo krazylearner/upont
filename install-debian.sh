@@ -47,11 +47,6 @@ mkdir ~/.composer
 mkdir ~/.composer/cache
 chmod -R 0777 ~/.composer/cache
 
-echo -e "\e[1m\e[34mInstallation de Phpdoc...\e[0m"
-
-curl -sL http://www.phpdoc.org/phpDocumentor.phar
-sudo mv /usr/local/bin/phpDocumentor.phar /usr/local/bin/phpdoc
-
 echo -e "\e[1m\e[34mConfiguration de Nginx...\e[0m"
 
 sudo cp utils/install/dev-upont.enpc.fr.conf /etc/nginx/sites-available/dev-upont.enpc.fr.conf
@@ -75,20 +70,15 @@ sudo npm install -g npm
 sudo npm install -g bower
 sudo npm install -g gulp
 
-echo -e "\e[1m\e[34mInstallation des dépendances php avec Composer...\e[0m"
-
-cd back
-composer install
-
 echo -e "\e[1m\e[34mInstallation des dépendances js avec nodejs et bower\e[0m"
 
 cd ../front
 npm install
 bower install
 
+cd ..
+./update.sh
+
 echo -e "\e[1m\e[34mAjout de dev-upont.enpc.fr au fichier hosts\e[0m"
 
 echo "127.0.0.1 dev-upont.enpc.fr" | sudo tee -a /etc/hosts
-
-# Génère la documentation et les logs php à back/phpdoc
-# phpdoc

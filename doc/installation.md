@@ -31,12 +31,6 @@ On an Arch-based distro
 ```
 ./install-arch.sh
 ```
-Finally uncomment the following lines in /etc/php/php.ini :
-```
-extension=pdo_mysql.so
-extension=mysqli.so
-extension=xsl.so
-```
 
 The script is interactive, you will be prompted to provide parameters (default values will do, except if you are behind a proxy).
 
@@ -44,7 +38,7 @@ If you **do not** have an Debian-based or Arch-based distro, find the equivalent
 
 Append the following line at the end of the http block in /etc/nginx/nginx.conf:
 ```
-include servers-enabled/*;
+include sites-enabled/*;
 ```
 
 If the installation of an [nginx server](http://nginx.org/en/docs/beginners_guide.html) with FastCGI via the installation script failed, you can understand the error messages thanks to [this tutorial](https://www.youtube.com/watch?v=SqE5uUbBU78) and install a php server with the help of [this page](http://symfony.com/doc/current/setup/web_server_configuration.html).

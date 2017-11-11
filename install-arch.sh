@@ -38,32 +38,27 @@ echo -e "\e[1m\e[34mInstallation de Composer...\e[0m"
 
 curl -sL https://getcomposer.org/installer | sudo -E php -- --install-dir=/usr/local/bin
 sudo mv /usr/local/bin/composer.phar /usr/local/bin/composer
-mkdir ~/.composer	# vérifier si ce répertoire existe déjà
-mkdir ~/.composer/cache
+mkdir -p ~/.composer
+mkdir -p ~/.composer/cache
 chmod -R 0777 ~/.composer/cache
-
-echo -e "\e[1m\e[34mInstallation de Phpdoc...\e[0m"
-
-curl -sL http://www.phpdoc.org/phpDocumentor.phar
-sudo mv /usr/local/bin/phpDocumentor.phar /usr/local/bin/phpdoc
 
 echo -e "\e[1m\e[34mConfiguration de Fast-CGI...\e[0m"
 
 sudo cp utils/install/www.conf-arch /etc/php/php-fpm.d/www.conf
-sudo mkdir /etc/php/conf.d # vérifier si ce répertoire existe déjà
+sudo mkdir -p /etc/php/conf.d
 sudo cp utils/install/global.ini /etc/php/conf.d/global.ini
 
 sudo cp utils/install/php-fpm.conf /etc/php/php-fpm.conf
-sudo systemctl php-fpm restart
+sudo systemctl start php-fpm
 
 echo -e "\e[1m\e[34mConfiguration de Nginx...\e[0m"
 
-sudo mkdir /etc/nginx/servers-available # vérifier si ce répertoire existe déjà
-sudo mkdir /etc/nginx/servers-enabled # vérifier si ce répertoire existe déjà
+sudo mkdir -p /etc/nginx/sites-available
+sudo mkdir -p /etc/nginx/sites-enabled
 
-sudo cp utils/install/dev-upont.enpc.fr.conf /etc/nginx/servers-available/dev-upont.enpc.fr.conf
-sudo ln -s /etc/nginx/servers-available/dev-upont.enpc.fr.conf /etc/nginx/servers-enabled/dev-upont.enpc.fr.conf
-sudo systemctl restart nginx
+sudo cp utils/install/dev-upont.enpc.fr.conf /etc/nginx/sites-available/dev-upont.enpc.fr.conf
+sudo ln -s /etc/nginx/sites-available/dev-upont.enpc.fr.conf /etc/nginx/sites-enabled/dev-upont.enpc.fr.conf
+sudo systemctl start nginx
 
 echo -e "\e[1m\e[34mConfiguration du proxy...\e[0m"
 if [ -z "$http_proxy" ]; then
@@ -85,20 +80,17 @@ sudo npm install -g npm
 sudo npm install -g bower
 sudo npm install -g gulp
 
-echo -e "\e[1m\e[34mInstallation des dépendances php avec Composer...\e[0m"
-
-cd back
-composer install
-
 echo -e "\e[1m\e[34mInstallation des dépendances js avec nodejs et bower\e[0m"
 
 cd ../front
 npm install
 bower install
 
+cd ..
+./update.sh
+
 echo -e "\e[1m\e[34mAjout de dev-upont.enpc.fr au fichier hosts\e[0m"
 
 echo "127.0.0.1 dev-upont.enpc.fr" | sudo tee -a /etc/hosts
 
-# Génère la documentation et les logs php à back/phpdoc
-# phpdoc
+sudo systemctl enable mariadb nginx php-fpm
