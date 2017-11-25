@@ -17,6 +17,9 @@ echo -e "\e[1m\e[34mAttribution des permissions...\e[0m"
 sudo chown -R http:http /var/www/upont
 sudo usermod -a -G http $(whoami)
 sudo chmod 2775 /var/www/upont
+# The first setfacl command sets permissions for future files and folders, while the second
+# one sets permissions on the existing files and folders. Both of these commands assign
+# permissions for the system user and the Apache user.
 sudo setfacl -dR -m u::rwX,g::rwX /var/www/upont
 sudo setfacl -R -m u::rwX,g::rwX /var/www/upont
 
@@ -85,9 +88,15 @@ echo -e "\e[1m\e[34mInstallation des dépendances js avec nodejs et bower\e[0m"
 cd ../front
 npm install
 bower install
+gulp build
 
-cd ..
-./update.sh
+cd ../back
+
+sudo composer self-update
+composer install
+bin/console cache:clear
+bin/console doctrine:mi:mi -n
+echo "Y" | bin/console doctrine:fixtures:load
 
 echo -e "\e[1m\e[34mAjout de dev-upont.enpc.fr au fichier hosts\e[0m"
 

@@ -28,6 +28,3 @@ rm -rf web/uploads/images/*
 rm -rf web/uploads/tmp/*
 echo "Y" | bin/console doctrine:fixtures:load
 sudo chmod 664 web/uploads/others/* && sudo chmod 664 web/uploads/tests/*
-
-# Génère la documentation et les logs php à back/phpdoc
-# phpdoc
