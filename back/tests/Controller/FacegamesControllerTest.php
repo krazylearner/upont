@@ -20,6 +20,12 @@ class FacegamesControllerTest extends WebTestCase
         );
         $response = $this->client->getResponse();
         $this->assertJsonResponse($response, 201);
+
+        $json = json_decode($response->getContent(), true);
+
+        $this->client->request('GET', '/facegames/'.$json['id']);
+        $response = $this->client->getResponse();
+        $this->assertJsonResponse($response, 200);
     }
 
     // Obligé de faire une seule grosse fonction pour utiliser le meme id
@@ -27,20 +33,6 @@ class FacegamesControllerTest extends WebTestCase
     // lors du chargement des fixtures
     public function testGet()
     {
-        $this->client->request('GET', '/facegames');
-        $response = $this->client->getResponse();
-        $this->assertJsonResponse($response, 200);
-
-        $data = json_decode($response->getContent(), true);
-        $this->assertTrue(!empty($data));
-        $key = array_keys($data)[0];
-        $this->assertTrue(isset($data[$key]['id']));
-        $this->gameId = $data[$key]['id'];
-
-        $this->client->request('GET', '/facegames/'.$this->gameId);
-        $response = $this->client->getResponse();
-        $this->assertJsonResponse($response, 200);
-
         $this->client->request('GET', '/facegames/sjoajsiohaysahais-asbsksaba7');
         $response = $this->client->getResponse();
         $this->assertJsonResponse($response, 404);
